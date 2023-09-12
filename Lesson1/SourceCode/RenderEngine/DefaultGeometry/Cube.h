@@ -4,7 +4,7 @@
 
 namespace
 {
-	struct PosColorVertex
+	struct CubePosColorVertex
 	{
 		float m_x;
 		float m_y;
@@ -19,7 +19,7 @@ public:
 	Cube();
 
 private:
-	inline static const PosColorVertex s_cubeVertices[] =
+	inline static const CubePosColorVertex s_cubeVertices[] =
 	{
 		{-1.0f,  1.0f,  1.0f, 0xff000000 },
 		{ 1.0f,  1.0f,  1.0f, 0xff0000ff },

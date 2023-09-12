@@ -2,6 +2,9 @@
 
 #include "RenderEngine.h"
 
+static float move = 0.0f;
+static bool moveIsChanged = false;
+
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -28,12 +31,14 @@ CRenderEngine::CRenderEngine(HINSTANCE hInstance)
 	bgfxInit.resolution.reset = BGFX_RESET_VSYNC;
 	bgfxInit.platformData.nwh = m_hwnd;
 	if (!bgfx::init(bgfxInit))
+	{
 		assert(0);
+	}	
 
-	bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF, 1.0f, 0);
+	bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x0000FFFF, 1.0f, 0);
 	bgfx::setViewRect(0, 0, 0, bgfx::BackbufferRatio::Equal);
 
-	m_defaultCube = new Cube();
+	m_defaultRhombus = new Rhombus();
 }
 
 CRenderEngine::~CRenderEngine()
@@ -100,11 +105,39 @@ void CRenderEngine::Update()
 	float proj[16];
 	bx::mtxProj(proj, 60.0f, float(m_Width) / float(m_Height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
 	bgfx::setViewTransform(0, view, proj);
+	
+	float mtx[16];
+	if (!moveIsChanged)
+	{
+		if (move < 2.5f)
+		{
+			move += 0.01f;
+		}
+		else
+		{
+			moveIsChanged = true;
+		}
+	}
+	else
+	{
+		if (move > 0.0f)
+		{
+			move -= 0.01f;
+		}
+		else
+		{
+			moveIsChanged = false;
+		}
+	}
+	
+	bx::mtxSRT(mtx, 1.0f, 1.0f, 1.0f, -move, 0.0f, 0.0f, move, 0.0f, 0.0f);
 
-	bgfx::setVertexBuffer(0, m_defaultCube->GetVertexBuffer());
-	bgfx::setIndexBuffer(m_defaultCube->GetIndexBuffer());
+	bgfx::setTransform(mtx);
 
-	bgfx::submit(0, m_defaultCube->GetProgramHandle());
+	bgfx::setVertexBuffer(0, m_defaultRhombus->GetVertexBuffer());
+	bgfx::setIndexBuffer(m_defaultRhombus->GetIndexBuffer());
+	 
+	bgfx::submit(0, m_defaultRhombus->GetProgramHandle());
 
 	bgfx::touch(0);
 

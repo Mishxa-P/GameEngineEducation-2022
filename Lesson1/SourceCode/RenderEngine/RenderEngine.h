@@ -3,6 +3,7 @@
 #include "Common.h"
 #include "RenderObject.h"
 #include "DefaultGeometry/Cube.h"
+#include "DefaultGeometry/Rhombus.h"
 
 class RENDERENGINE_API CRenderEngine
 {
@@ -20,5 +21,5 @@ private:
 
 	long m_Width = 800;
 	long m_Height = 600;
-	Cube* m_defaultCube;
+	Rhombus* m_defaultRhombus;
 };
