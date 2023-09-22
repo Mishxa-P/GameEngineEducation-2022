@@ -5,13 +5,14 @@
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #endif
+#include <INIReader.h>   
 
 #include "GameEngine.h"
 #include "RenderEngine.h"
 #include "RenderThread.h"
 #include "CubeGameObject.h"
 #include "GameTimer.h"
-
+   
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -36,6 +37,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     timer.Start();
     timer.Reset();
 
+    float posX = 0.0f;
+    float posY = 0.0f;
+    char moveLeft = 'A';
+    char moveRight = 'D';
+    char moveUp = 'W';
+    char moveDown = 'S';
+
+    INIReader reader("actionmap.ini");
+    if (reader.ParseError() != -1)
+    {
+        moveLeft = reader.Get("Keyboard", "MoveLeft", "A").at(0);
+        moveRight = reader.Get("Keyboard", "MoveRight", "D").at(0);
+        moveUp = reader.Get("Keyboard", "MoveUp", "W").at(0);
+        moveDown = reader.Get("Keyboard", "MoveDown", "S").at(0);
+    }
+ 
     // Main message loop:
     while (msg.message != (WM_QUIT | WM_CLOSE))
     {
@@ -43,14 +60,36 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
+            switch (msg.message)
+            {
+            case WM_KEYDOWN:
+                if ((GetAsyncKeyState(moveLeft)))
+                {
+                    posX -= 1.0f;
+                    cube->SetPosition(posX, posY, 0.0f);
+                }
+                if ((GetAsyncKeyState(moveRight)))
+                {
+                    posX += 1.0f;
+                    cube->SetPosition(posX, posY, 0.0f);
+                }
+                if ((GetAsyncKeyState(moveUp)))
+                {
+                    posY += 1.0f;
+                    cube->SetPosition(posX, posY, 0.0f);
+                }
+                if ((GetAsyncKeyState(moveDown)))
+                {
+                    posY -= 1.0f;
+                    cube->SetPosition(posX, posY, 0.0f);
+                }
+                break;
+            } 
         }
         else
         {
             float t = 0;
             timer.Tick();
-            t = sin(timer.TotalTime())*2;
-            cube->SetPosition(t, 0.0f, 0.0f);
-
             renderThread->OnEndFrame();
         }
     }
