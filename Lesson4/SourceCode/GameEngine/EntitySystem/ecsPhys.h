@@ -36,6 +36,16 @@ struct FrictionAmount
   float val;
 };
 
+struct Platform
+{
+
+};
+
+struct Destroyable
+{
+
+};
+
 typedef float Speed;
 
 void register_ecs_phys_systems(flecs::world &ecs);

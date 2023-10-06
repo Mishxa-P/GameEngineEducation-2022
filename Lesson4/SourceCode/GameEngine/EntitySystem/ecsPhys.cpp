@@ -1,4 +1,7 @@
 #include "ecsPhys.h"
+#include "ecsMesh.h"
+#include "ecsGun.h"
+#include "ecsControl.h"
 #include <stdlib.h>
 
 static float rand_flt(float from, float to)
@@ -48,6 +51,7 @@ void register_ecs_phys_systems(flecs::world &ecs)
       vel.y -= vel.y * friction.val * e.delta_time();
       vel.z -= vel.z * friction.val * e.delta_time();
     });
+
 
 
   ecs.system<Position, const Velocity>()

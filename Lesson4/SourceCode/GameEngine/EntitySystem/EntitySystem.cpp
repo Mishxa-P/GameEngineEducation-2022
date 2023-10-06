@@ -1,6 +1,7 @@
 #include "EntitySystem.h"
 #include "ecsSystems.h"
 #include "ecsMesh.h"
+#include "ecsGun.h"
 #include "ecsControl.h"
 #include "ecsPhys.h"
 
@@ -11,29 +12,41 @@ EntitySystem::EntitySystem(RenderEngine* renderEngine, InputHandler* inputHandle
     ecs.entity("renderEngine")
         .set(RenderEnginePtr{ renderEngine });
 
+    auto cubeGun = ecs.entity()
+        .set(Position{ 0.f, 0.f, 0.f })
+        .set(MaxAmmo{ 6 })
+        .set(CurrentAmmo{ 6 })
+        .set(BulletSpeed{ 40.f })
+        .set(Reload{ 1.0f })
+        .set(CurrentReload{ 1.0f })
+        .set(ShootCooldown{ 0.1f })
+        .set(CurrentShootCooldown{ 0.1f })
+        .add<Gun>()
+        .add<CubeMesh>();
+
+    auto cubeDestroyable1 =  ecs.entity()
+            .set(Position{ 50.f, 15.f, 0.f})
+            .set(AmmoBuff{ 2 })
+            .add<Destroyable>()
+            .add<CubeMesh>();
+
+    auto cubeDestroyable2 = ecs.entity()
+        .set(Position{ 25.f, -5.f, 0.f })
+        .set(AmmoBuff{ 2 })
+        .add<Destroyable>()
+        .add<CubeMesh>();
+  
+    for (int i = 5; i < 35; i++)
+    {
+        ecs.entity()
+            .set(Position{ 5.f + i * 2, -25.f, 0.f })
+            .add<Platform>()
+            .add<CubeMesh>();
+    }
+
     register_ecs_mesh_systems(ecs);
-    register_ecs_control_systems(ecs);
-    register_ecs_phys_systems(ecs);
-
-    auto cubeControl = ecs.entity()
-        .set(Position{ 0.f, 0.f, 0.f })
-        .set(Velocity{ 0.f, 0.f, 0.f })
-        .set(Speed{ 10.f })
-        .set(FrictionAmount{ 0.9f })
-        .set(JumpSpeed{ 10.f })
-        .set(Gravity{ 0.f, -9.8065f, 0.f })
-        .set(BouncePlane{ 0.f, 1.f, 0.f, 0.f })
-        .set(Bounciness{ 0.3f })
-        .add<Controllable>()
-        .add<CubeMesh>();
-
-    auto cubeMoving = ecs.entity()
-        .set(Position{ 0.f, 0.f, 0.f })
-        .set(Velocity{ 0.f, 3.f, 0.f })
-        .set(Gravity{ 0.f, -9.8065f, 0.f })
-        .set(BouncePlane{ 0.f, 1.f, 0.f, 5.f })
-        .set(Bounciness{ 1.f })
-        .add<CubeMesh>();
+    register_ecs_gun_systems(ecs);
+    register_ecs_phys_systems(ecs);  
 }
 
 void EntitySystem::Update()
