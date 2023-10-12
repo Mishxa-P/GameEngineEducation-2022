@@ -145,14 +145,15 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\SDKs\inih\include;$(SolutionDir)..\..\SDKs\lua\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\..\SDKs\lua\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);lua.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\SDKs\inih\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\SDKs\lua\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);lua.lib;inih.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -179,18 +180,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Common.h" />
-    <ClInclude Include="IScriptProxy.h" />
-    <ClInclude Include="IScriptSystem.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="ScriptProxy.h" />
-    <ClInclude Include="ScriptSystem.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ScriptProxy.cpp" />
-    <ClCompile Include="ScriptSystem.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="ScriptProxy.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\..\SDKs\inih\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

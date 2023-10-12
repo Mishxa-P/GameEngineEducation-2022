@@ -15,12 +15,11 @@ public:
 	void Update();
 
 	const std::bitset<eIC_Max>& GetInputState() const;
-
+	bool Test(size_t key);
 private:
 	void LoadConfiguration();
 
 	bool IsKeyDown(size_t vk_key);
-
 	void MapSymbol(std::string strSymbol, size_t nSymbol);
 	void MapInputEvent(std::size_t nSymbol, size_t nCommand);
 	void MapCommandSymbol(std::string strCommand, size_t nCommand, std::string strDefaultSymbol);

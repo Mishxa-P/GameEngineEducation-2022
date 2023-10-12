@@ -35,7 +35,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg = { 0 };
 
     timer.Start();
-    timer.Reset();
+    timer.Reset();                                      
 
     // Main message loop:
     while (msg.message != (WM_QUIT | WM_CLOSE))

@@ -70,6 +70,11 @@ const std::bitset<eIC_Max>& InputHandler::GetInputState() const
 	return m_InputState;
 }
 
+bool InputHandler::Test(size_t key)
+{
+	return m_InputState.test(key);
+}
+
 void InputHandler::LoadConfiguration()
 {
 	INIReader reader(m_strMapFilePath.c_str());
