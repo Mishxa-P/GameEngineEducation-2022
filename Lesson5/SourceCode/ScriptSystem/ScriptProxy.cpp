@@ -25,6 +25,7 @@ float ScriptProxy::UpdateMove(float deltaTime, float speed)
     if (value)
     {
         float vel = value.value();
+        return vel;
     }
     else
     {
