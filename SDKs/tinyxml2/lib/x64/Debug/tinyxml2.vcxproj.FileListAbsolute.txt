@@ -1,0 +1,1 @@
+C:\Games\Dev\MIPT\GameEngineEducation-2023\SDKs\tinyxml2\lib\x64\Debug\tinyxml2.lib
