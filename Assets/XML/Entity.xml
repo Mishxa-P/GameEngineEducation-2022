@@ -1,0 +1,10 @@
+<ENTITY>
+	<Position x='0.9' y='0.0' z='0.0'/>
+	<Velocity velX='0.0' velY ='0.0' velZ='0.0'/>
+	<Speed value='10.0'/>
+	<FrictionAmount value='0.9'/>
+	<Gravity valueX='0.0' valueY ='-9.8065' valueZ='0.0'/>	
+	<BouncePlane valueX='0.0' valueY ='1.0' valueZ='0.0' valueW='0.0'/>
+	<Controllable/>
+	<CubeMesh/>
+</ENTITY>
